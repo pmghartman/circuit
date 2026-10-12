@@ -1,0 +1,13 @@
+[workspace]
+members = ["core", "server", "src-tauri"]
+default-members = ["core", "server"]
+resolver = "2"
+
+# major.minor here, patch = git commit count
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+
+[profile.release]
+lto = "thin"
+strip = true

@@ -1,0 +1,11 @@
+[package]
+name = "circuit-app"
+version.workspace = true
+edition.workspace = true
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+circuit = { path = "../core" }
+tauri = { version = "2", features = [] }

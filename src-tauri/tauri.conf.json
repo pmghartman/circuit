@@ -1,0 +1,10 @@
+{
+  "productName": "circuit",
+  "identifier": "dev.mulab.circuit",
+  "build": { "frontendDist": "../ui" },
+  "app": {
+    "withGlobalTauri": true,
+    "windows": [{ "title": "circuit", "width": 1200, "height": 760 }]
+  },
+  "bundle": { "active": true, "icon": ["icons/icon.png"] }
+}

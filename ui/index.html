@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>circuit</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23161718'/%3E%3Cpath d='M4 16h5l2-5 3 10 3-10 3 10 2-5h6' fill='none' stroke='%233cb371' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<script>
+// relative urls pinned to page dir, mount prefix unknown
+(() => {
+  const p = location.pathname, b = document.createElement('base');
+  b.href = /\.[^/]*$/.test(p) ? p.replace(/[^/]*$/, '') : p.replace(/\/?$/, '/');
+  document.head.append(b);
+})();
+</script>
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<header>
+  <span class="logo"><i>❯</i> circuit</span>
+  <span id="state" class="pill">…</span>
+  <span id="status" role="status"></span>
+  <span id="version" class="tag"></span>
+</header>
+<main>
+  <section class="pane" id="editor" data-title="schematic">
+    <nav id="palette"></nav>
+    <svg id="schematic" xmlns="http://www.w3.org/2000/svg" aria-label="schematic">
+      <defs><pattern id="dots" width="16" height="16" patternUnits="userSpaceOnUse"><circle r="1"/></pattern></defs>
+      <g id="sheet"></g>
+    </svg>
+    <div id="inspect"></div>
+  </section>
+  <section class="pane" id="dag" data-title="dag · y potential · x hops from gnd">
+    <div id="host"><svg id="graph" xmlns="http://www.w3.org/2000/svg" aria-label="solved circuit"></svg></div>
+    <div id="player" hidden>
+      <button id="play" title="play / pause">▶</button>
+      <input id="scrub" type="range" min="0" max="1000" value="0" aria-label="time">
+      <span id="clock"></span>
+    </div>
+  </section>
+</main>
+<script src="app.js" type="module"></script>
+</body>
+</html>
