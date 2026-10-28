@@ -49,7 +49,7 @@ html, body { height: 100%; }
 
 body {
     display: grid;
-    grid-template-rows: auto 1fr;
+    grid-template-rows: auto auto 1fr;
     gap: 8px;
     padding: 6px 8px 8px;
     background: var(--bg);
@@ -70,6 +70,18 @@ header { display: flex; align-items: center; gap: 1ch; white-space: nowrap; min-
 .pill.warn { background: var(--warn); color: var(--accent-ink); }
 .pill.err { background: var(--err); color: var(--accent-ink); }
 .tag { color: var(--dim); }
+button.tag { padding: 0 1ch; }
+button.tag:disabled { color: var(--dim); background: none; cursor: default; }
+
+/* the update's log, dropped below the header while one runs */
+#updater { border: 1px solid var(--frame); background: var(--pane); }
+main { grid-row: 3; }
+body:has(> #updater[hidden]) { grid-template-rows: auto 1fr; }
+body:has(> #updater[hidden]) main { grid-row: 2; }
+#updater .row { display: flex; align-items: center; gap: 1ch; padding: 2px 1ch; border-bottom: 1px solid var(--frame); color: var(--sub); }
+#updater .row span { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#updater .row span.err { color: var(--err); }
+#updlog { margin: 0; max-height: 10em; overflow: auto; padding: 4px 1ch; font: inherit; color: var(--dim); white-space: pre-wrap; overflow-wrap: anywhere; }
 
 /* ---------- controls ---------- */
 

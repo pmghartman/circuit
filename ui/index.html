@@ -21,7 +21,12 @@
   <span id="state" class="pill">…</span>
   <span id="status" role="status"></span>
   <span id="version" class="tag"></span>
+  <button id="update" class="tag" type="button" title="pull the latest source, rebuild and restart" hidden>update</button>
 </header>
+<section id="updater" hidden>
+  <div class="row"><span id="updinfo"></span><button id="updclose" type="button" title="hide">×</button></div>
+  <pre id="updlog"></pre>
+</section>
 <main>
   <section class="pane" id="editor" data-title="schematic">
     <nav id="palette"></nav>

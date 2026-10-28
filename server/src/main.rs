@@ -1,4 +1,6 @@
 // embedded ui + api, routed by suffix so any mount prefix works
+mod update;
+
 use std::io::{Cursor, Read};
 use std::{env, sync::Arc, sync::OnceLock, thread};
 
@@ -72,6 +74,14 @@ fn solve(req: &mut Request) -> Res {
     }
 }
 
+// this checkout's update from upstream, CIRCUIT_UPDATES=off hides it
+fn updater() -> Option<&'static update::Updater> {
+    static UPDATER: OnceLock<Option<update::Updater>> = OnceLock::new();
+    UPDATER
+        .get_or_init(|| (env::var("CIRCUIT_UPDATES").ok().as_deref() != Some("off")).then(|| update::Updater::new(update::source_dir())))
+        .as_ref()
+}
+
 fn route(req: &mut Request) -> Res {
     let path = req.url().split('?').next().unwrap_or_default().to_string();
     match req.method() {
@@ -79,6 +89,14 @@ fn route(req: &mut Request) -> Res {
         Method::Get | Method::Head if path.ends_with("/api/version") => {
             json(serde_json::json!({ "version": circuit::VERSION }), 200)
         }
+        Method::Get | Method::Head if path.ends_with("/api/update") => match updater() {
+            Some(u) => json(u.status(), 200),
+            None => json(serde_json::json!({ "version": circuit::VERSION, "canUpdate": false, "state": "idle", "log": "", "why": "updates are off" }), 200),
+        },
+        Method::Post if path.ends_with("/api/update") => match updater().ok_or_else(|| "updates are off".to_string()).and_then(|u| u.start()) {
+            Ok(st) => json(st, 202),
+            Err(e) => json(serde_json::json!({ "error": e }), 409),
+        },
         Method::Get | Method::Head => {
             let name = path.rsplit('/').next().unwrap_or_default();
             let files = files();

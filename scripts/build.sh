@@ -6,7 +6,8 @@ cd "$(dirname "$0")/.."
 what=${1:-all}
 
 rust() {
-    export PATH="$HOME/.cargo/bin:$PATH"
+    # the desktop app's own PATH (when it runs this) misses the usual tool dirs
+    export PATH="$HOME/.cargo/bin:$HOME/.local/bin:/opt/homebrew/bin:/usr/local/bin:$PATH"
     command -v cargo >/dev/null || curl -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal
 }
 
